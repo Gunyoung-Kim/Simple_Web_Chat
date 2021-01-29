@@ -38,8 +38,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 				.getProtectionDomain()
 				.getCodeSource().getLocation();
 		try {
-			System.out.println(location);
-			System.out.println(location.toURI());
 			String path = location.toURI() + "index.html";
 			path = !path.contains("file:") ? path : path.substring(5);
 			INDEX = new File(path);
@@ -54,7 +52,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
 	@Override
 	public void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-		System.out.println("Welcome!"+ctx.pipeline().channel());
+		System.out.println("Welcome! "+ctx.channel().remoteAddress());
 		if(wsUri.equalsIgnoreCase(request.uri())) {
 			ctx.fireChannelRead(request.retain());
 		} else {
@@ -70,7 +68,6 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 				response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
 			}
 			ctx.write(response);
-			
 			
 			if(ctx.pipeline().get(SslHandler.class) == null) {
 				ctx.write(new DefaultFileRegion(file.getChannel(), 0 , file.length()));
