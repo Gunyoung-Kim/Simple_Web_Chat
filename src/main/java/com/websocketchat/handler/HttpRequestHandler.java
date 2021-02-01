@@ -61,7 +61,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 			}
 			RandomAccessFile file = new RandomAccessFile(INDEX, "r");
 			HttpResponse response = new DefaultHttpResponse(request.protocolVersion(), HttpResponseStatus.OK);
-			response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; cahrset=UTF-8");
+			response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; cahrset=UTF-8");
 			boolean keepAlive = HttpUtil.isKeepAlive(request);
 			if(keepAlive) {
 				response.headers().set(HttpHeaderNames.CONTENT_LENGTH, file.length());
